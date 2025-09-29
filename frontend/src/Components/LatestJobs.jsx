@@ -1,0 +1,179 @@
+
+import { useEffect, useRef, useState, useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import JobCard from "./JobCard";
+import Loader from "./Loader";
+import axios from "axios";
+
+const LatestJobs = () => {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const sliderRef = useRef(null);
+
+  const API = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
+  // Fetch & deduplicate jobs
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${API}/api/jobs`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const uniqueJobs = [];
+        const seen = new Set();
+
+        res.data.forEach((job) => {
+          const key = job._id || job.externalId;
+          if (!seen.has(key)) {
+            seen.add(key);
+            uniqueJobs.push(job);
+          }
+        });
+
+        setJobs(uniqueJobs);
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [API, token]);
+
+  //  Scroll function
+  const scroll = (dir) => {
+    if (!sliderRef.current) return;
+    const scrollAmount =
+      dir === "left"
+        ? -sliderRef.current.offsetWidth
+        : sliderRef.current.offsetWidth;
+    sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
+
+  // Role colors
+  const roleColors = [
+    "bg-green-100 text-green-600",
+    "bg-blue-100 text-blue-600",
+    "bg-purple-100 text-purple-600",
+    "bg-pink-100 text-pink-600",
+    "bg-yellow-100 text-yellow-600",
+    "bg-red-100 text-red-600",
+    "bg-indigo-100 text-indigo-600",
+    "bg-orange-100 text-orange-600",
+  ];
+
+  //  Categories (top 8 roles dynamically)
+  const categories = useMemo(() => {
+    const counts = {};
+    jobs.forEach((job) => {
+      const role = job.role || job.title || "Other";
+      counts[role] = (counts[role] || 0) + 1;
+    });
+
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([name, count], idx) => ({
+        name,
+        count,
+        color: roleColors[idx % roleColors.length],
+      }));
+  }, [jobs]);
+
+  //  Filter jobs by category
+  const filteredJobs = useMemo(() => {
+    if (!selectedCategory) return jobs;
+    return jobs.filter(
+      (job) => (job.role || job.title || "Other") === selectedCategory
+    );
+  }, [jobs, selectedCategory]);
+
+  return (
+    <section className="px-10 py-8 bg-gray-50">
+      <h2 className="text-2xl font-bold text-gray-800 mb-12">
+        <span className="text-blue-600 text-3xl">Latest</span> Jobs Opportunity
+      </h2>
+
+      <div className="grid grid-cols-12 gap-8">
+        {/* Categories */}
+        <div className="col-span-3 flex flex-col gap-4">
+          {/* Show All Option */}
+          <div
+            onClick={() => setSelectedCategory(null)}
+            className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium inline-flex items-center justify-between ${
+              !selectedCategory
+                ? "bg-blue-600 text-white ring-2 ring-blue-400"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            <span>Show All Jobs</span>
+            <span className="ml-2 bg-white px-2 py-0.5 rounded-full text-xs font-semibold shadow">
+              {jobs.length}
+            </span>
+          </div>
+
+          {categories.map((cat) => (
+            <div
+              key={cat.name}
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === cat.name ? null : cat.name
+                )
+              }
+              className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium inline-flex items-center justify-between ${cat.color} ${
+                selectedCategory === cat.name ? "ring-2 ring-blue-500" : ""
+              }`}
+            >
+              <span>{cat.name}</span>
+              <span className="ml-2 bg-white px-2 py-0.5 rounded-full text-xs font-semibold shadow">
+                {cat.count}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="col-span-9 relative">
+          <button
+            onClick={() => scroll("left")}
+            className="absolute -left-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="absolute -right-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
+          >
+            <ChevronRight size={20} />
+          </button>
+          <div
+            ref={sliderRef}
+            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory relative min-h-[20rem]"
+          >
+            {loading ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader />
+              </div>
+            ) : filteredJobs.length === 0 ? (
+              <p className="text-gray-500">No jobs found.</p>
+            ) : (
+              filteredJobs.map((job, index) => (
+                <div
+                  key={job._id || job.externalId || `job-${index}`}
+                  className="snap-start flex-shrink-0 w-80"
+                >
+                  <JobCard job={job} />
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default LatestJobs;
