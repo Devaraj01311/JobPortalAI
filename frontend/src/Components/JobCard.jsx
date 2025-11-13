@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -9,7 +8,6 @@ const JobCard = ({ job, highlighted = false }) => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isApplied = job.appliedUsers?.includes(user?.id);
-
   const [showFullDesc, setShowFullDesc] = useState(false);
 
   const applyJob = async () => {
@@ -41,13 +39,14 @@ const JobCard = ({ job, highlighted = false }) => {
 
   return (
     <div
-      className={`relative w-80 flex-shrink-0 snap-start rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border p-6 ${
+      className={`relative w-full sm:w-80 flex-shrink-0 snap-start rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border p-4 sm:p-6 ${
         highlighted
           ? "bg-blue-600 border-blue-600 text-white"
           : "bg-white border-gray-100 text-gray-900"
       }`}
     >
-      <div className="flex items-center justify-between mb-4">
+      {/* Top Section */}
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex items-center gap-3">
           <div
             className={`w-10 h-10 flex items-center justify-center rounded-full overflow-hidden ${
@@ -93,29 +92,33 @@ const JobCard = ({ job, highlighted = false }) => {
           {job.type || "Full Time"}
         </span>
       </div>
+
+      {/* Job Info */}
       <h3
-        className={`text-lg font-bold mb-2 ${
+        className={`text-base sm:text-lg font-bold mb-1 sm:mb-2 ${
           highlighted ? "text-white" : "text-gray-900"
         }`}
       >
         {job.title}
       </h3>
       <p
-        className={`text-sm mb-4 ${
+        className={`text-xs sm:text-sm mb-3 sm:mb-4 ${
           highlighted ? "text-white/80" : "text-gray-500"
         }`}
       >
         {job.location || "Remote"}
       </p>
       <p
-        className={`font-bold mb-4 text-base ${
+        className={`font-bold mb-3 sm:mb-4 text-sm sm:text-base ${
           highlighted ? "text-green-200" : "text-green-600"
         }`}
       >
         {job.salary ? `$${job.salary}` : "Salary N/A"}
       </p>
+
+      {/* Description */}
       <p
-        className={`text-sm mb-4 leading-relaxed ${
+        className={`text-xs sm:text-sm mb-4 leading-relaxed ${
           highlighted ? "text-white/90" : "text-gray-600"
         }`}
       >
@@ -123,7 +126,7 @@ const JobCard = ({ job, highlighted = false }) => {
         {job.description?.length > 120 && (
           <button
             onClick={() => setShowFullDesc(!showFullDesc)}
-            className={`ml-2 text-xs ${
+            className={`ml-1 sm:ml-2 text-xs ${
               highlighted
                 ? "text-white hover:underline"
                 : "text-blue-600 hover:underline"
@@ -133,11 +136,13 @@ const JobCard = ({ job, highlighted = false }) => {
           </button>
         )}
       </p>
-      <div className="flex items-center justify-between">
+
+      {/* Footer Buttons */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <button
           onClick={applyJob}
           disabled={isApplied}
-          className={`px-5 py-2 rounded-full font-semibold text-sm transition ${
+          className={`w-full sm:w-auto px-4 py-2 rounded-full font-semibold text-xs sm:text-sm transition ${
             isApplied
               ? highlighted
                 ? "bg-white/30 text-white cursor-not-allowed"
@@ -155,7 +160,7 @@ const JobCard = ({ job, highlighted = false }) => {
             href={job.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`text-sm ${
+            className={`text-xs sm:text-sm ${
               highlighted
                 ? "text-white hover:underline"
                 : "text-blue-600 hover:underline"

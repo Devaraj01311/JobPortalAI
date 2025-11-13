@@ -30,29 +30,29 @@ const CompanyLogoSlider = () => {
     responsive: [
       { breakpoint: 1280, settings: { slidesToShow: 4 } },
       { breakpoint: 1024, settings: { slidesToShow: 3 } },
-      { breakpoint: 768, settings: { slidesToShow: 2 } },
-      { breakpoint: 480, settings: { slidesToShow: 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 2, arrows: false } },
+      { breakpoint: 480, settings: { slidesToShow: 1, arrows: false } },
     ],
   };
 
   return (
-    <div className="px-6 md:px-12">
-      <h2 className="text-start mt-6 text-3xl md:text-4xl text-black font-extrabold tracking-tight mb-8">
-        Top <span className="text-3xl text-blue-500">Hiring Companies</span> 
+    <div className="px-4 sm:px-6 md:px-12 mt-8">
+      <h2 className="text-start text-2xl sm:text-3xl md:text-4xl text-black font-extrabold tracking-tight mb-6 sm:mb-8">
+        Top <span className="text-blue-500">Hiring Companies</span>
       </h2>
 
-      <div className="company-slider bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl shadow-md py-8 px-4">
+      <div className="company-slider bg-gradient-to-r from-gray-50 to-gray-100 rounded-3xl shadow-md py-6 sm:py-8 px-2 sm:px-4">
         <Slider {...settings}>
           {companies.map((company, index) => (
-            <div key={company.id} className="flex justify-center items-center h-36">
+            <div key={company.id} className="flex justify-center items-center h-28 sm:h-36">
               <div
-                className={`w-32 h-32 bg-white shadow-md rounded-2xl flex items-center justify-center p-4 transition-all duration-300 
-                ${index === activeIndex ? "scale-110 shadow-xl" : "opacity-60"}`}
+                className={`w-24 sm:w-28 md:w-32 h-24 sm:h-28 md:h-32 bg-white shadow-md rounded-2xl flex items-center justify-center p-4 transition-all duration-300 
+                ${index === activeIndex ? "scale-110 shadow-xl" : "opacity-70"}`}
               >
                 <img
                   src={company.logo}
                   alt={company.name}
-                  className={`max-h-16 max-w-24 object-contain transition-all duration-300 
+                  className={`max-h-10 sm:max-h-12 md:max-h-16 max-w-[90px] sm:max-w-[100px] object-contain transition-all duration-300 
                   ${index === activeIndex ? "grayscale-0" : "grayscale"}`}
                 />
               </div>

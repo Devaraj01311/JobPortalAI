@@ -22,14 +22,20 @@ const Register = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/2 flex justify-center items-center p-10">
-        <form className="w-full max-w-sm bg-white p-8 rounded " onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold mb-6 text-blue-900 text-left">Create New Account</h2>
-          
+    <div className="flex flex-col md:flex-row h-screen">
+      {/* Left Section - Form */}
+      <div className="w-full md:w-1/2 flex justify-center items-center p-6 md:p-10 bg-gray-50">
+        <form
+          className="w-full max-w-sm bg-white p-6 md:p-8 rounded-xl shadow-md"
+          onSubmit={handleSubmit}
+        >
+          <h2 className="text-2xl font-bold mb-6 text-blue-900 text-center md:text-left">
+            Create New Account
+          </h2>
+
           <input
             name="name"
-            placeholder="Enter Your Fullname"
+            placeholder="Enter Your Full Name"
             value={form.name}
             onChange={handleChange}
             className="border-b-2 p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-900"
@@ -37,7 +43,7 @@ const Register = () => {
           <input
             name="email"
             placeholder="Enter Your Email"
-            value={form.email} 
+            value={form.email}
             onChange={handleChange}
             className="border-b-2 p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-900"
           />
@@ -49,28 +55,36 @@ const Register = () => {
             onChange={handleChange}
             className="border-b-2 p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-900"
           />
-          <button type="submit" className="bg-blue-900 text-white p-3 w-full font-semibold rounded hover:bg-blue-800">
+          <button
+            type="submit"
+            className="bg-blue-900 text-white p-3 w-full font-semibold rounded hover:bg-blue-800 transition-all"
+          >
             Register
           </button>
-          <p className="text-center mt-4">
+          <p className="text-center mt-4 text-sm">
             <Link to="/login" className="text-blue-800 font-medium hover:underline">
               Already have an account? Login
             </Link>
           </p>
         </form>
       </div>
-      <div className="w-2/3 bg-blue-900 text-white flex flex-col justify-center items-center p-10 relative rounded-bl-full">
-        <h2 className="text-3xl font-serif mb-4">Already have an account?</h2>
-        <p className="text-center mb-6 max-w-xs">
-       <span className="font-bold text-3xl"></span>Start your journey towards success by discovering opportunities tailored to your strengths <span className="font-bold text-1xl">✨</span>
+
+      {/* Right Section - Info Panel */}
+      <div className="relative w-full md:w-1/2 bg-blue-900 text-white flex flex-col justify-center items-center p-8 md:p-10 rounded-t-[60px] md:rounded-t-none md:rounded-bl-full">
+        <h2 className="text-3xl font-serif mb-4 text-center md:text-left">
+          Already have an account?
+        </h2>
+        <p className="text-center mb-6 max-w-xs text-sm md:text-base leading-relaxed">
+          Start your journey towards success by discovering opportunities tailored to your strengths{" "}
+          <span className="font-bold text-xl">✨</span>
         </p>
-        <Link to="/login" className="bg-white  text-blue-900 px-9 py-2 rounded-full font-semibold hover:bg-gray-200">
+        <Link
+          to="/login"
+          className="bg-white text-blue-900 px-8 py-2 rounded-full font-semibold hover:bg-gray-200 transition-all"
+        >
           Login
         </Link>
-        <img src="image.jpg" alt="Rocket" className="w-48 h-48 absolute bottom-0  -left-12 rounded-tr-3xl" />
       </div>
-
-
     </div>
   );
 };

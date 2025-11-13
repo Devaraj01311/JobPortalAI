@@ -24,38 +24,51 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/2 rounded-br-full bg-purple-500 text-white flex flex-col justify-center items-center p-10 relative">
-        <h2 className="text-3xl font-serif  mb-4">New here?</h2>
-        <p className="text-center mb-6 max-w-xs">
-          Welcome! Unlock new career paths, grow your expertise, and achieve your goals with the guidance and support you need
+    <div className="flex flex-col md:flex-row h-screen">
+      {/* Left Section */}
+      <div className="relative w-full md:w-1/2 bg-purple-500 text-white flex flex-col justify-center items-center p-10 rounded-b-[80px] md:rounded-br-full md:rounded-none">
+        <h2 className="text-3xl font-serif mb-4 text-center md:text-left">New here?</h2>
+        <p className="text-center mb-6 max-w-xs text-sm md:text-base">
+          Welcome! Unlock new career paths, grow your expertise, and achieve your goals with the guidance and support you need.
         </p>
-        <Link to="/register" className="bg-white text-purple-500 px-6 py-2 font-semibold rounded-full hover:bg-gray-200">
+        <Link
+          to="/register"
+          className="bg-white text-purple-500 px-6 py-2 font-semibold rounded-full hover:bg-gray-200 transition-all"
+        >
           Sign Up
         </Link>
-        <img src="jobimage.png" alt="Rocket" className="w-48 h-56 absolute bottom-1 -right-11 rounded-tl-full" />
       </div>
-      <div className="w-2/4 flex justify-center items-center p-1">
-        <form className="w-full max-w-sm bg-white p-8 rounded " onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold text-purple-700 mb-6 text-left">Sign in</h2>
+
+      {/* Right Section */}
+      <div className="w-full md:w-1/2 flex justify-center items-center p-6 md:p-1 bg-gray-50">
+        <form
+          className="w-full max-w-sm bg-white p-6 md:p-8 rounded-xl shadow-md"
+          onSubmit={handleSubmit}
+        >
+          <h2 className="text-2xl font-bold text-purple-700 mb-6 text-center md:text-left">
+            Sign in
+          </h2>
           <input
             type="email"
             placeholder="Enter Your Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="border-b-2 p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             className="border-b-2 p-3 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
-          <button type="submit" className="bg-purple-500 text-white font-semibold p-3 w-full rounded hover:bg-purple-700">
+          <button
+            type="submit"
+            className="bg-purple-500 text-white font-semibold p-3 w-full rounded hover:bg-purple-700 transition-all"
+          >
             Login
           </button>
-          <p className="text-center mt-4">
+          <p className="text-center mt-4 text-sm">
             <Link to="/forgot-password" className="text-purple-500 hover:underline">
               Forgot Password?
             </Link>

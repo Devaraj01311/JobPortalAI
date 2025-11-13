@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import JobCard from "./JobCard";
@@ -14,7 +13,6 @@ const LatestJobs = () => {
   const API = import.meta.env.VITE_API_BASE_URL;
   const token = localStorage.getItem("token");
 
-  // Fetch & deduplicate jobs
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -45,7 +43,6 @@ const LatestJobs = () => {
     fetchJobs();
   }, [API, token]);
 
-  //  Scroll function
   const scroll = (dir) => {
     if (!sliderRef.current) return;
     const scrollAmount =
@@ -55,7 +52,6 @@ const LatestJobs = () => {
     sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
-  // Role colors
   const roleColors = [
     "bg-green-100 text-green-600",
     "bg-blue-100 text-blue-600",
@@ -67,7 +63,6 @@ const LatestJobs = () => {
     "bg-orange-100 text-orange-600",
   ];
 
-  //  Categories (top 8 roles dynamically)
   const categories = useMemo(() => {
     const counts = {};
     jobs.forEach((job) => {
@@ -85,7 +80,6 @@ const LatestJobs = () => {
       }));
   }, [jobs]);
 
-  //  Filter jobs by category
   const filteredJobs = useMemo(() => {
     if (!selectedCategory) return jobs;
     return jobs.filter(
@@ -94,18 +88,19 @@ const LatestJobs = () => {
   }, [jobs, selectedCategory]);
 
   return (
-    <section className="px-10 py-8 bg-gray-50">
-      <h2 className="text-2xl font-bold text-gray-800 mb-12">
-        <span className="text-blue-600 text-3xl">Latest</span> Jobs Opportunity
+    <section className="px-4 sm:px-6 md:px-10 py-10 bg-gray-50">
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-center md:text-left">
+        <span className="text-blue-600 text-3xl md:text-4xl">Latest</span> Jobs
+        Opportunity
       </h2>
 
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
         {/* Categories */}
-        <div className="col-span-3 flex flex-col gap-4">
+        <div className="md:col-span-3 flex flex-wrap md:flex-col gap-3 justify-center md:justify-start">
           {/* Show All Option */}
           <div
             onClick={() => setSelectedCategory(null)}
-            className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium inline-flex items-center justify-between ${
+            className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium flex items-center justify-between w-fit md:w-full ${
               !selectedCategory
                 ? "bg-blue-600 text-white ring-2 ring-blue-400"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -117,6 +112,7 @@ const LatestJobs = () => {
             </span>
           </div>
 
+          {/* Dynamic Categories */}
           {categories.map((cat) => (
             <div
               key={cat.name}
@@ -125,7 +121,7 @@ const LatestJobs = () => {
                   selectedCategory === cat.name ? null : cat.name
                 )
               }
-              className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium inline-flex items-center justify-between ${cat.color} ${
+              className={`cursor-pointer px-4 py-2 rounded-full text-sm font-medium flex items-center justify-between w-fit md:w-full ${cat.color} ${
                 selectedCategory === cat.name ? "ring-2 ring-blue-500" : ""
               }`}
             >
@@ -136,34 +132,41 @@ const LatestJobs = () => {
             </div>
           ))}
         </div>
-        <div className="col-span-9 relative">
+
+        {/* Job Slider */}
+        <div className="md:col-span-9 relative">
+          {/* Scroll Buttons (Hidden on Mobile) */}
           <button
             onClick={() => scroll("left")}
-            className="absolute -left-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
+            className="hidden md:flex absolute -left-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
           >
             <ChevronLeft size={20} />
           </button>
           <button
             onClick={() => scroll("right")}
-            className="absolute -right-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
+            className="hidden md:flex absolute -right-6 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow hover:bg-gray-100 z-10"
           >
             <ChevronRight size={20} />
           </button>
+
+          {/* Job Cards */}
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory relative min-h-[20rem]"
+            className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory relative min-h-[20rem] pb-4"
           >
             {loading ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader />
               </div>
             ) : filteredJobs.length === 0 ? (
-              <p className="text-gray-500">No jobs found.</p>
+              <p className="text-gray-500 text-center w-full">
+                No jobs found.
+              </p>
             ) : (
               filteredJobs.map((job, index) => (
                 <div
                   key={job._id || job.externalId || `job-${index}`}
-                  className="snap-start flex-shrink-0 w-80"
+                  className="snap-start flex-shrink-0 w-72 sm:w-80"
                 >
                   <JobCard job={job} />
                 </div>
