@@ -11,7 +11,7 @@ const LatestJobs = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const sliderRef = useRef(null);
 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
   const token = localStorage.getItem("token");
 
   // Fetch & deduplicate jobs

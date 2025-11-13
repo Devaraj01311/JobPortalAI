@@ -19,7 +19,7 @@ const Home = () => {
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch current user
   useEffect(() => {

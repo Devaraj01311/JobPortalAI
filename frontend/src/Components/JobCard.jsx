@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const JobCard = ({ job, highlighted = false }) => {
   const token = localStorage.getItem("token");
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isApplied = job.appliedUsers?.includes(user?.id);

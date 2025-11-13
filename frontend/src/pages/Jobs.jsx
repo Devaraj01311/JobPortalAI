@@ -9,7 +9,7 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState(""); 
   const [loading, setLoading] = useState(false); 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch jobs from API
   const fetchJobs = async (query = "") => {

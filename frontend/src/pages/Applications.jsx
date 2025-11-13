@@ -10,7 +10,7 @@ const Applications = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); 
   const [search, setSearch] = useState(""); 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
   const token = localStorage.getItem("token");
 
   useEffect(() => {

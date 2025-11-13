@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

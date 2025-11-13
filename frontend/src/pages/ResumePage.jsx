@@ -13,7 +13,7 @@ const ResumePage = () => {
   const modalRef = useRef(null);
 
   const token = localStorage.getItem("token");
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_BASE_URL;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
